@@ -12,6 +12,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./"),
+      "@workers": path.resolve(__dirname, "./src/workers/"),
     },
   },
   css: {
@@ -26,6 +27,14 @@ export default defineConfig({
       output: {
         entryFileNames: "web.js", // The bundled file name
         assetFileNames: "[name][extname]", // Keep original CSS name
+      },
+    },
+  },
+  worker: {
+    format: "es", // ES modules for the worker
+    rollupOptions: {
+      output: {
+        entryFileNames: "[name].js", // Name workers uniquely
       },
     },
   },
