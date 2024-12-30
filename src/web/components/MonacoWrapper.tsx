@@ -1,8 +1,16 @@
 import Editor, { Monaco, useMonaco } from "@monaco-editor/react";
 import React, { useEffect, useRef } from "react";
+import useSettings from "../hooks/useSettings";
 import Loading from "./Loading";
 
-const vscode = acquireVsCodeApi();
+// const vscode = acquireVsCodeApi();
+
+const THEME_MAP = {
+  dark: "vs-dark",
+  light: "vs-light",
+  constract: "hc-black",
+  "constract-light": "hc-light",
+};
 
 interface MonacoWrapperProps {
   theme?: string;
@@ -26,19 +34,24 @@ export const MonacoWrapper: React.FC<MonacoWrapperProps> = ({
 }) => {
   const monacoRef = useRef(null);
   const monaco = useMonaco();
+  const settings = useSettings();
 
   useEffect(() => {
+    // ASSIGN MONACO REFERENCE
     if (monaco && !monacoRef.current) {
       monacoRef.current = monaco as any;
     }
-  }, [monaco]);
+
+    // SET NEW THEME IF USER TOGGLES THEME
+    if (monaco) {
+      monaco.editor.setTheme(THEME_MAP[settings.currentTheme] || "vs-dark");
+    }
+  }, [monaco, settings]);
 
   function handleEditorDidMount(editor: any, monaco: Monaco) {
-    monaco.editor.setTheme("vs-dark"); // TODO:  use vscode default theme
+    monaco.editor.setTheme(THEME_MAP[settings.currentTheme] || "vs-dark"); // TODO:  use vscode default theme
     monacoRef.current = editor;
   }
-
-  console.log("========--------------------------", vscode);
 
   return (
     <Editor

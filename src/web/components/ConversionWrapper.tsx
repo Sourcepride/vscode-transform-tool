@@ -2,8 +2,9 @@ import { getWorker } from "@/src/utils/workerWrapper";
 import { useState } from "react";
 import PrettierWorker from "../../workers/prettier.worker?worker";
 import { transformer } from "../types";
-import EditorDivider from "./EditorDivider";
 import EditorPanel from "./EditorPanel";
+import ErrorMessage from "./ErrorMessage";
+import Loading from "./Loading";
 
 let prettierWorker: Worker;
 
@@ -19,7 +20,7 @@ type ConversionWrapperProps = {
 const ConversionWrapper: React.FC<ConversionWrapperProps> = ({
   language,
   resultLanguage,
-  resultTitle,
+  // resultTitle,
   title,
   transformer,
   splitScreen = true,
@@ -41,6 +42,7 @@ const ConversionWrapper: React.FC<ConversionWrapperProps> = ({
       });
 
       prettierWorker.onmessage = (event) => {
+        setIsWorking(false);
         if (event.data?.payload) {
           setMessage("");
           setTransformedResult(event.data.payload);
@@ -49,39 +51,46 @@ const ConversionWrapper: React.FC<ConversionWrapperProps> = ({
         }
       };
     } catch (error) {
+      setIsWorking(false);
       console.error(error);
       setMessage((error as Error).message);
     }
-    setIsWorking(false);
   };
-
-  console.log(
-    "||||||||||||||||||||||||||||||||||||||",
-    transformedResult,
-    "\n",
-    message
-  );
 
   return (
     <div className="w-full h-full">
       <section className={`w-full  grid-cols-2 ${splitScreen && "grid"}`}>
         {splitScreen && (
-          <div className="w-full">
-            <EditorPanel
-              language={language}
-              defaultValue="{}"
-              editable
-              changeHandler={changeHandler}
-            />
-            <EditorDivider />
-          </div>
+          <EditorPanel
+            title={title}
+            language={language}
+            defaultValue="{}"
+            editable
+            changeHandler={changeHandler}
+          />
         )}
-        <EditorPanel
-          language={resultLanguage}
-          defaultValue={transformedResult || "interface Root {}"}
-          editable
-          changeHandler={() => null}
-        />
+        <>
+          {isWorking && (
+            <div className="w-full h-full grid place-items-center">
+              <div>
+                <Loading />
+                <p className="py-2 italic font-medium">on it...</p>
+              </div>
+            </div>
+          )}
+
+          {
+            <div className={`block ${isWorking && "hidden"}`}>
+              <EditorPanel
+                language={resultLanguage}
+                defaultValue={transformedResult || "interface Root {}"}
+                editable
+                changeHandler={() => null}
+              />
+            </div>
+          }
+        </>
+        {message && <ErrorMessage message={message} />}
       </section>
     </div>
   );

@@ -16,7 +16,7 @@ const JsonToTypescript: React.FC<JsonToTypescriptProps> = ({}) => {
   return (
     <ConversionWrapper
       transformer={transformer}
-      title="JSON"
+      title="JSON to typescript"
       language="json"
       resultTitle="TypeScript"
       resultLanguage={"typescript"}

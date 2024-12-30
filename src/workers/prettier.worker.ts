@@ -21,11 +21,6 @@ _self.onmessage = ({
 }: Data) => {
   (async function () {
     try {
-      console.log(
-        "+++++++++++================================",
-        language,
-        value
-      );
       const payload = await prettify(language, value);
 
       _self.postMessage({

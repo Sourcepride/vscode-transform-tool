@@ -18,7 +18,7 @@ export interface WebviewApi<StateType> {
    *
    * @return The current state or `undefined` if no state has been set.
    */
-  //   getState(): StateType | undefined;
+  getState(): StateType | undefined;
 
   /**
    * Set the persistent state stored for this webview.
@@ -28,7 +28,7 @@ export interface WebviewApi<StateType> {
    *
    * @return The new state.
    */
-  //   setState<T extends StateType | undefined>(newState: T): T;
+  setState<T extends StateType | undefined>(newState: T): T;
 }
 
 declare global {
@@ -42,3 +42,12 @@ declare global {
    */
   function acquireVsCodeApi<StateType = unknown>(): WebviewApi<StateType>;
 }
+
+export type Settings = {
+  currentTheme: "dark" | "light" | "constract" | "constract-light";
+  panels: "1" | "2";
+  fontFamily: string;
+  fontSize: number;
+  fontWeight: string;
+  initialContent?: string;
+};

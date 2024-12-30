@@ -8,6 +8,7 @@ import * as postcssParser from "prettier/plugins/postcss";
 import * as typescriptParser from "prettier/plugins/typescript";
 import * as yamlParser from "prettier/plugins/yaml";
 import prettier from "prettier/standalone";
+import { format } from "sql-formatter";
 import { prettierParsers } from "./prettier";
 
 const PLUGINS = [
@@ -20,6 +21,8 @@ const PLUGINS = [
   postcssParser,
   htmlParser,
   graphqlParser,
+  // embed,
+  // sqlParser,
 ];
 
 export async function prettify(language: string, value: string) {
@@ -36,6 +39,8 @@ export async function prettify(language: string, value: string) {
 
   if (language === "json") {
     result = JSON.stringify(JSON.parse(value), null, 2);
+  } else if (["sql"].includes(language.toLocaleLowerCase())) {
+    result = format(value, { language: language as any });
   } else {
     result = prettier.format(value, {
       parser:

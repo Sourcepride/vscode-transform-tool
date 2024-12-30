@@ -1,16 +1,19 @@
 import { useRef, useState } from "react";
 import useHeightChange from "../hooks/useHeigthChange";
+import useSettings from "../hooks/useSettings";
 import { editorOptions } from "../utils";
 import EditorHeader from "./EditorHeader";
 import MonacoWrapper from "./MonacoWrapper";
 
 type EditorPanelProps = {
+  title?: string;
   changeHandler: (value: string) => void;
   defaultValue?: string;
   editable?: boolean;
   language: string;
 };
 const EditorPanel: React.FC<EditorPanelProps> = ({
+  title,
   defaultValue,
   editable,
   language,
@@ -18,8 +21,16 @@ const EditorPanel: React.FC<EditorPanelProps> = ({
 }) => {
   const oldValueRef = useRef(defaultValue);
   const [editorValue, setEditorValue] = useState(defaultValue || "");
-  const options = editorOptions({ editable });
   const height = useHeightChange();
+  const settings = useSettings();
+
+  const options = editorOptions({
+    editable,
+    fontWeight: settings.fontWeight,
+    fontFamily: settings.fontFamily,
+    fontSize: settings.fontSize,
+    renderValidationDecorations: title ? "on" : "off",
+  });
 
   const handleChange = (value: string | undefined) => {
     setEditorValue(value || "");
@@ -33,14 +44,19 @@ const EditorPanel: React.FC<EditorPanelProps> = ({
 
   return (
     <section className="w-full">
-      <EditorHeader />
+      <EditorHeader
+        title={title}
+        language={language}
+        setCurrentValue={setEditorValue}
+        currentValue={editorValue}
+      />
 
       <MonacoWrapper
         language={language}
         onChange={handleChange}
         options={options}
         value={editorValue}
-        height={height}
+        height={height - 52}
       />
     </section>
   );

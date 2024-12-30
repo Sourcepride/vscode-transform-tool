@@ -1,9 +1,13 @@
-import JsonToTypescript from "./features/JsonToTypescript";
+import JsonToGraphql from "./features/JsonToGraphql";
 
 function App() {
   return (
     <>
-      <JsonToTypescript />
+      {/* <JsonToTypescript /> */}
+      {/* <JsonToZod /> */}
+      {/* <JsonToMysql /> */}
+      {/* <JsonToMongoose /> */}
+      <JsonToGraphql />
     </>
   );
 }
