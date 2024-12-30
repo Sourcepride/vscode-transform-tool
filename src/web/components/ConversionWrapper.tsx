@@ -15,12 +15,16 @@ type ConversionWrapperProps = {
   resultTitle: string;
   resultLanguage: string;
   splitScreen?: boolean;
+  defaultValue?: string;
+  defaultResult?: string;
 };
 
 const ConversionWrapper: React.FC<ConversionWrapperProps> = ({
   language,
   resultLanguage,
   // resultTitle,
+  defaultResult: defaultResultValue,
+  defaultValue,
   title,
   transformer,
   splitScreen = true,
@@ -64,7 +68,7 @@ const ConversionWrapper: React.FC<ConversionWrapperProps> = ({
           <EditorPanel
             title={title}
             language={language}
-            defaultValue="{}"
+            defaultValue={defaultValue || "{}"}
             editable
             changeHandler={changeHandler}
           />
@@ -83,7 +87,9 @@ const ConversionWrapper: React.FC<ConversionWrapperProps> = ({
             <div className={`block ${isWorking && "hidden"}`}>
               <EditorPanel
                 language={resultLanguage}
-                defaultValue={transformedResult || "interface Root {}"}
+                defaultValue={
+                  transformedResult || defaultResultValue || "interface Root {}"
+                }
                 editable
                 changeHandler={() => null}
               />

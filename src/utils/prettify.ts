@@ -37,9 +37,12 @@ export async function prettify(language: string, value: string) {
       useTabs: false,
   */
 
+  const langInSmLetters = language.toLocaleLowerCase();
   if (language === "json") {
     result = JSON.stringify(JSON.parse(value), null, 2);
-  } else if (["sql"].includes(language.toLocaleLowerCase())) {
+  } else if (["toml"].includes(langInSmLetters)) {
+    result = value;
+  } else if (["sql"].includes(langInSmLetters)) {
     result = format(value, { language: language as any });
   } else {
     result = prettier.format(value, {

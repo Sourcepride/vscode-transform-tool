@@ -1,4 +1,4 @@
-import JsonToGraphql from "./features/JsonToGraphql";
+import TomlToJson from "./features/TomlToJson";
 
 function App() {
   return (
@@ -7,7 +7,15 @@ function App() {
       {/* <JsonToZod /> */}
       {/* <JsonToMysql /> */}
       {/* <JsonToMongoose /> */}
-      <JsonToGraphql />
+      {/* <JsonToGraphql /> */}
+      {/* JAVASCRIPT */}
+      {/* <JsObjectToJson /> */}
+      {/* <JsObjectToTypescript /> */}
+      {/* OTHERS  */}
+      {/* <YamlToJson /> */}
+      {/* <YamlToToml /> */}
+      {/* <TomlToYaml /> */}
+      <TomlToJson />
     </>
   );
 }

@@ -5,6 +5,8 @@ import { editorOptions } from "../utils";
 import EditorHeader from "./EditorHeader";
 import MonacoWrapper from "./MonacoWrapper";
 
+const TURN_VALIDATION_OF_FOR = ["javascript"];
+
 type EditorPanelProps = {
   title?: string;
   changeHandler: (value: string) => void;
@@ -24,12 +26,15 @@ const EditorPanel: React.FC<EditorPanelProps> = ({
   const height = useHeightChange();
   const settings = useSettings();
 
+  const notIncluded = !TURN_VALIDATION_OF_FOR.includes(
+    language.toLocaleLowerCase()
+  );
   const options = editorOptions({
     editable,
     fontWeight: settings.fontWeight,
     fontFamily: settings.fontFamily,
     fontSize: settings.fontSize,
-    renderValidationDecorations: title ? "on" : "off",
+    renderValidationDecorations: title && notIncluded ? "on" : "off",
   });
 
   const handleChange = (value: string | undefined) => {

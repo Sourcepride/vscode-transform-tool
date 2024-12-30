@@ -65,6 +65,7 @@
     "worker-loader": "^3.0.8"
   },
   "dependencies": {
+    "@iarna/toml": "^2.2.5",
     "@monaco-editor/react": "^4.6.0",
     "@radix-ui/react-slot": "^1.1.1",
     "@radix-ui/react-tooltip": "^1.1.6",
