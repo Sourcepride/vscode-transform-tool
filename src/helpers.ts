@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
-import { Settings } from "./web/types";
+import { combinedToolsArray } from "./constants";
+import { Settings, toolArgs } from "./web/types";
 
 export function getCurrentTheme() {
   const themeKind = vscode.window.activeColorTheme;
@@ -35,13 +36,24 @@ function getFontSettings() {
   };
 }
 
-export function getSettings({ content }: { content?: string }) {
+export function getSettings({
+  content,
+  tool,
+}: {
+  content?: string;
+  tool: toolArgs;
+}) {
   const settings: Settings = {
     currentTheme: getCurrentTheme(),
     panels: content ? "1" : "2",
     initialContent: content,
+    tool,
     ...getFontSettings(),
   };
 
   return JSON.stringify(settings);
+}
+
+export function isToolString(tool: string) {
+  return combinedToolsArray.includes(tool as any);
 }

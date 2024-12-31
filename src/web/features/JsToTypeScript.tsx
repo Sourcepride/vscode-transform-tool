@@ -2,6 +2,7 @@ import JsonToTS from "json-to-ts";
 import { useCallback } from "react";
 import ConversionWrapper from "../components/ConversionWrapper";
 
+const DEFAULT = "{chima: [1,2,3]}";
 export default function JsObjectToTypescript() {
   const name = "JS Object to Typescript";
 
@@ -23,6 +24,7 @@ export default function JsObjectToTypescript() {
       language="javascript"
       resultTitle="TypeScript"
       resultLanguage={"typescript"}
+      defaultValue={DEFAULT}
     />
   );
 }

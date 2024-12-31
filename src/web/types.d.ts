@@ -1,3 +1,5 @@
+import { combinedToolsArray } from "../constants";
+
 export type transformer = (args: { value: string }) => Promise<string>;
 
 /**
@@ -43,6 +45,7 @@ declare global {
   function acquireVsCodeApi<StateType = unknown>(): WebviewApi<StateType>;
 }
 
+export type toolArgs = (typeof combinedToolsArray)[number];
 export type Settings = {
   currentTheme: "dark" | "light" | "constract" | "constract-light";
   panels: "1" | "2";
@@ -50,4 +53,5 @@ export type Settings = {
   fontSize: number;
   fontWeight: string;
   initialContent?: string;
+  tool: toolArgs;
 };

@@ -1,5 +1,5 @@
 import { getWorker } from "@/src/utils/workerWrapper";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import PrettierWorker from "../../workers/prettier.worker?worker";
 import { transformer } from "../types";
 import EditorPanel from "./EditorPanel";
@@ -29,6 +29,7 @@ const ConversionWrapper: React.FC<ConversionWrapperProps> = ({
   transformer,
   splitScreen = true,
 }) => {
+  const countRef = useRef(0);
   const [transformedResult, setTransformedResult] = useState("");
   const [isWorking, setIsWorking] = useState(false);
   const [message, setMessage] = useState("");
@@ -60,6 +61,11 @@ const ConversionWrapper: React.FC<ConversionWrapperProps> = ({
       setMessage((error as Error).message);
     }
   };
+
+  if (countRef.current < 1) {
+    countRef.current = countRef.current + 1;
+    changeHandler(defaultValue || "");
+  }
 
   return (
     <div className="w-full h-full">

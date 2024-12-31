@@ -7,6 +7,7 @@ const DEFAULT_SETTINGS: Settings = {
   fontFamily: "monospace, sans-serif",
   fontSize: 12,
   fontWeight: "normal",
+  tool: "json_to_typescript",
 };
 
 const useSettings = () => {

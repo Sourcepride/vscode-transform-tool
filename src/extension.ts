@@ -1,9 +1,10 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import * as path from "path";
 import * as vscode from "vscode";
-import { getMainHtmlContent } from ".";
-import { getCurrentTheme, getSettings } from "./helpers";
+import { getSettings, isToolString } from "./helpers";
+import { OptionsProvider } from "./treeProvider";
+import { toolArgs } from "./web/types";
+import { WebviewManager } from "./webviewManager";
 
 let timeOutsIdDump: any[] = [];
 
@@ -11,52 +12,22 @@ let timeOutsIdDump: any[] = [];
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
   let currentPanel: vscode.WebviewPanel | undefined = undefined;
+  let tool: toolArgs = "json_to_typescript";
 
-  const disposable = vscode.commands.registerCommand("transform.start", () => {
-    getCurrentTheme();
-    const columnToShowIn = vscode.window.activeTextEditor
-      ? vscode.window.activeTextEditor.viewColumn
-      : undefined;
-
-    if (currentPanel) {
-      // If we already have a panel, show it in the target column
-      currentPanel.reveal(columnToShowIn);
-    } else {
-      currentPanel = vscode.window.createWebviewPanel(
-        "transform",
-        "Transform Tool",
-        columnToShowIn || vscode.ViewColumn.One,
-        {
-          enableScripts: true,
-          retainContextWhenHidden: true,
-        }
-      );
-
-      const scriptPath = vscode.Uri.file(
-        path.join(context.extensionPath, "out/web/web.js")
-      );
-      const stylesPath = vscode.Uri.file(
-        path.join(context.extensionPath, "out/web/main.css")
-      );
-      // ALL URLS IN OTPUT FOLDER CONVERTED TO VSCODE URI FOR WEBVIEW [css, js scripts,  worker scrpts etc]
-      const scriptUri = currentPanel.webview.asWebviewUri(scriptPath);
-      const stylesUri = currentPanel.webview.asWebviewUri(stylesPath);
-      const prettierUri = currentPanel.webview.asWebviewUri(
-        vscode.Uri.file(
-          path.join(context.extensionPath, "out/web/prettier.worker.js")
-        )
-      );
-
-      currentPanel.webview.html = getMainHtmlContent({
-        scriptUri,
-        stylesUri,
-        workers: {
-          prettierUri,
-        },
-        settings: getSettings({}),
-      });
-    }
+  vscode.window.createTreeView("transform-tool-tree", {
+    treeDataProvider: new OptionsProvider(),
   });
+
+  const disposable = vscode.commands.registerCommand(
+    "transform.start",
+    (type) => {
+      tool = isToolString(type ?? "") ? type : tool;
+      currentPanel = WebviewManager.getManager().getOrCreateWebView(
+        context,
+        getSettings({ tool })
+      );
+    }
+  );
 
   context.subscriptions.push(disposable);
 
@@ -76,7 +47,7 @@ export function activate(context: vscode.ExtensionContext) {
           }
           currentPanel.webview.postMessage({
             command: "theme",
-            payload: getSettings({}),
+            payload: getSettings({ tool }),
           });
         }, 1000);
 

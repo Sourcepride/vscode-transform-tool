@@ -9,9 +9,34 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onView:transform-tool-tree"
+  ],
   "main": "./out/extension.js",
   "contributes": {
+    "viewsWelcome": [
+      {
+        "view": "transform-tool",
+        "contents": "Please wait Loading... "
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "transform-tool",
+          "title": "Transform",
+          "icon": "assets/logo.svg"
+        }
+      ]
+    },
+    "views": {
+      "transform-tool": [
+        {
+          "id": "transform-tool-tree",
+          "name": "Tool"
+        }
+      ]
+    },
     "commands": [
       {
         "command": "transform.start",
