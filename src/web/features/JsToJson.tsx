@@ -13,7 +13,7 @@ export default function JsObjectToJson() {
       transformer={transformer}
       title="JS Object to Json"
       language="javascript"
-      defaultValue={DEFAULT}
+      defaultValue={DEFAULT.trim()}
       resultTitle="JSON"
       resultLanguage={"json"}
     />

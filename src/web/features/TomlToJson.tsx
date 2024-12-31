@@ -27,7 +27,7 @@ export default function TomlToJson() {
       language="toml"
       resultTitle="JSON"
       resultLanguage={"json"}
-      defaultValue={DEFAULT}
+      defaultValue={DEFAULT.trim()}
     />
   );
 }

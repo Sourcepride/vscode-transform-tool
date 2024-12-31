@@ -27,7 +27,7 @@ export default function TomlToYaml() {
       language="toml"
       resultTitle="YAML"
       resultLanguage={"yaml"}
-      defaultValue={DEFAULT}
+      defaultValue={DEFAULT.trim()}
     />
   );
 }

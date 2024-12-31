@@ -4,6 +4,12 @@ import { useCallback } from "react";
 import ConversionWrapper from "../components/ConversionWrapper";
 
 window.Buffer = window.Buffer || Buff;
+const DEFAULT = `
+{
+  "id": 1,
+  "name": "Confience Osonwa"
+}
+`;
 
 export default function JsonToMongoose() {
   const transformer = useCallback(async ({ value }: { value: string }) => {
@@ -17,6 +23,7 @@ export default function JsonToMongoose() {
       language="json"
       resultTitle="Mongoose Schema"
       resultLanguage={"json"}
+      defaultValue={DEFAULT}
     />
   );
 }

@@ -1,6 +1,7 @@
 import { getWorker } from "@/src/utils/workerWrapper";
 import { useRef, useState } from "react";
 import PrettierWorker from "../../workers/prettier.worker?worker";
+import useSettings from "../hooks/useSettings";
 import { transformer } from "../types";
 import EditorPanel from "./EditorPanel";
 import ErrorMessage from "./ErrorMessage";
@@ -14,7 +15,6 @@ type ConversionWrapperProps = {
   language: string;
   resultTitle: string;
   resultLanguage: string;
-  splitScreen?: boolean;
   defaultValue?: string;
   defaultResult?: string;
 };
@@ -27,9 +27,9 @@ const ConversionWrapper: React.FC<ConversionWrapperProps> = ({
   defaultValue,
   title,
   transformer,
-  splitScreen = true,
 }) => {
   const countRef = useRef(0);
+  const settings = useSettings();
   const [transformedResult, setTransformedResult] = useState("");
   const [isWorking, setIsWorking] = useState(false);
   const [message, setMessage] = useState("");
@@ -66,6 +66,8 @@ const ConversionWrapper: React.FC<ConversionWrapperProps> = ({
     countRef.current = countRef.current + 1;
     changeHandler(defaultValue || "");
   }
+
+  const splitScreen = settings.panels === "2";
 
   return (
     <div className="w-full h-full">

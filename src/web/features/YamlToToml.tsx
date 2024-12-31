@@ -3,6 +3,7 @@ import { useCallback } from "react";
 import yaml from "yaml";
 import ConversionWrapper from "../components/ConversionWrapper";
 
+const DEFAULT = `spaceX: "Elon"`;
 export default function YamlToToml() {
   const transformer = useCallback(async ({ value }: { value: string }) => {
     return toml.stringify(yaml.parse(value));
@@ -15,6 +16,7 @@ export default function YamlToToml() {
       language="yaml"
       resultTitle="TOML"
       resultLanguage={"toml"}
+      defaultValue={DEFAULT.trim()}
     />
   );
 }

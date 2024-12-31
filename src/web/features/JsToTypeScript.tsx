@@ -24,7 +24,7 @@ export default function JsObjectToTypescript() {
       language="javascript"
       resultTitle="TypeScript"
       resultLanguage={"typescript"}
-      defaultValue={DEFAULT}
+      defaultValue={DEFAULT.trim()}
     />
   );
 }

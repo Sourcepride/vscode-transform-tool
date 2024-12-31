@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import yaml from "yaml";
 import ConversionWrapper from "../components/ConversionWrapper";
 
+const DEFAULT = `okah: "corn"`;
 export default function YamlToJson() {
   const transformer = useCallback(async ({ value }: { value: string }) => {
     return JSON.stringify(yaml.parse(value));
@@ -14,6 +15,7 @@ export default function YamlToJson() {
       language="yaml"
       resultTitle="JSON"
       resultLanguage={"json"}
+      defaultValue={DEFAULT.trim()}
     />
   );
 }

@@ -2,11 +2,18 @@ import gs from "generate-schema";
 import { useCallback } from "react";
 import ConversionWrapper from "../components/ConversionWrapper";
 
+const DEFAULT = `
+{
+  "id": 1,
+  "name": "Confience Osonwa",
+  "teamMates": ["Marvi", "Goody"],
+  "team": "Nigeria"
+}
+`;
+
 export default function JsonToMysql() {
   const transformer = useCallback(({ value }: { value: string }) => {
-    const v = gs.mysql(JSON.parse(value));
-    console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", v);
-    return v;
+    return gs.mysql(JSON.parse(value));
   }, []);
 
   return (
@@ -16,6 +23,7 @@ export default function JsonToMysql() {
       language="json"
       resultTitle="MySQL Schema"
       resultLanguage={"sql"}
+      defaultValue={DEFAULT.trim()}
     />
   );
 }
