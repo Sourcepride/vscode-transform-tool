@@ -39,7 +39,7 @@ class Bar extends vscode.TreeItem {
       this.command = {
         command: "transform.start",
         title: "Start Tool",
-        arguments: [label],
+        arguments: [{ arguments: [label] }],
       };
     }
   }

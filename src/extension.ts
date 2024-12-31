@@ -22,13 +22,14 @@ export function activate(context: vscode.ExtensionContext) {
 
   const disposable = vscode.commands.registerCommand(
     "transform.start",
-    ([type, content]) => {
-      console.log("||||||||||||||||||||||||||||||", type, typeof content);
-      tool = isToolString("") ? type : tool;
+    ({ arguments: args }) => {
+      const [type, content] = args;
+      tool = isToolString(type) ? type : tool;
       webviewManager = WebviewManager.getManager();
       currentPanel = webviewManager.getOrCreateWebView(
         context,
-        getSettings({ tool, content })
+        getSettings({ tool, content }),
+        !!content
       );
 
       currentPanel.onDidDispose(
@@ -75,18 +76,6 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(disposableChangeListener);
-
-  context.subscriptions.push(
-    vscode.commands.registerCommand(
-      "transform-tools.contextMenuOption",
-      async (args) => {
-        console.log("==============================================", args);
-        vscode.window.showInformationMessage(
-          `Context menu option called with: ${args}`
-        );
-      }
-    )
-  );
 }
 
 // This method is called when your extension is deactivated

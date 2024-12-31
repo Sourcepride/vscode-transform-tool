@@ -17,7 +17,11 @@ export class WebviewManager {
     return this.webManager;
   }
 
-  getOrCreateWebView(context: vscode.ExtensionContext, settings: string) {
+  getOrCreateWebView(
+    context: vscode.ExtensionContext,
+    settings: string,
+    openBesides?: boolean
+  ) {
     const columnToShowIn = vscode.window.activeTextEditor
       ? vscode.window.activeTextEditor.viewColumn
       : undefined;
@@ -28,10 +32,14 @@ export class WebviewManager {
       this.update(context, settings);
       return this.panel;
     } else {
+      const column = openBesides
+        ? vscode.ViewColumn.Beside
+        : columnToShowIn || vscode.ViewColumn.One;
+
       this.panel = vscode.window.createWebviewPanel(
         "transform",
         "Transform Tool",
-        columnToShowIn || vscode.ViewColumn.One,
+        column,
         {
           enableScripts: true,
           retainContextWhenHidden: true,
