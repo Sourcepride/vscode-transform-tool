@@ -1,8 +1,14 @@
 {
   "name": "transform-tool",
   "displayName": "transform-tool",
-  "description": "convert from one schema form or type form to another",
+  "description": "convert from one schema, form,  or type to another",
   "version": "0.0.1",
+  "publisher": "Sourcepride",
+  "icon": "assets/logo.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Sourcepride/vscode-transform-tool.git"
+  },
   "engines": {
     "vscode": "^1.96.0"
   },
