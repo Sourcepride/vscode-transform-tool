@@ -2,6 +2,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
 import { getSettings, isToolString } from "./helpers";
+import { textSelectionHandler } from "./selectTextProcessor";
 import { OptionsProvider } from "./treeProvider";
 import { toolArgs } from "./web/types";
 import { WebviewManager } from "./webviewManager";
@@ -12,6 +13,7 @@ let timeOutsIdDump: any[] = [];
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
   let currentPanel: vscode.WebviewPanel | undefined = undefined;
+  let webviewManager: WebviewManager;
   let tool: toolArgs = "json_to_typescript";
 
   vscode.window.createTreeView("transform-tool-tree", {
@@ -20,16 +22,32 @@ export function activate(context: vscode.ExtensionContext) {
 
   const disposable = vscode.commands.registerCommand(
     "transform.start",
-    (type) => {
-      tool = isToolString(type ?? "") ? type : tool;
-      currentPanel = WebviewManager.getManager().getOrCreateWebView(
+    ([type, content]) => {
+      console.log("||||||||||||||||||||||||||||||", type, typeof content);
+      tool = isToolString("") ? type : tool;
+      webviewManager = WebviewManager.getManager();
+      currentPanel = webviewManager.getOrCreateWebView(
         context,
-        getSettings({ tool })
+        getSettings({ tool, content })
+      );
+
+      currentPanel.onDidDispose(
+        () => {
+          currentPanel = undefined;
+          webviewManager.dispose();
+        },
+        null,
+        context.subscriptions
       );
     }
   );
+  const disposableProcessSelected = vscode.commands.registerCommand(
+    "transform-tools.processSelectedText",
+    textSelectionHandler
+  );
 
   context.subscriptions.push(disposable);
+  context.subscriptions.push(disposableProcessSelected);
 
   // Handler of  change in vscode configuration
   const disposableChangeListener = vscode.workspace.onDidChangeConfiguration(
@@ -57,6 +75,18 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(disposableChangeListener);
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      "transform-tools.contextMenuOption",
+      async (args) => {
+        console.log("==============================================", args);
+        vscode.window.showInformationMessage(
+          `Context menu option called with: ${args}`
+        );
+      }
+    )
+  );
 }
 
 // This method is called when your extension is deactivated

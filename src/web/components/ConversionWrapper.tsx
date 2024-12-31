@@ -64,7 +64,7 @@ const ConversionWrapper: React.FC<ConversionWrapperProps> = ({
 
   if (countRef.current < 1) {
     countRef.current = countRef.current + 1;
-    changeHandler(defaultValue || "");
+    changeHandler(settings.initialContent || defaultValue || "");
   }
 
   const splitScreen = settings.panels === "2";

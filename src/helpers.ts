@@ -46,7 +46,7 @@ export function getSettings({
   const settings: Settings = {
     currentTheme: getCurrentTheme(),
     panels: content ? "1" : "2",
-    initialContent: content,
+    initialContent: content || "",
     tool,
     ...getFontSettings(),
   };

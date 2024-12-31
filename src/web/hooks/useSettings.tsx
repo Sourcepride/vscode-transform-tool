@@ -16,7 +16,7 @@ const useSettings = () => {
   let currentSettings = (window as any).viewSettings || DEFAULT_SETTINGS;
   if (updatedSettings) {
     try {
-      currentSettings = JSON.parse(updatedSettings);
+      currentSettings = { ...currentSettings, ...JSON.parse(updatedSettings) };
     } catch (_) {}
   }
   return currentSettings as Settings;

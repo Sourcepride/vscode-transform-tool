@@ -9,7 +9,7 @@ const DEFAULT = `
   "id": 1,
   "name": "Confience Osonwa"
 }
-`;
+`.trim();
 
 export default function JsonToMongoose() {
   const transformer = useCallback(async ({ value }: { value: string }) => {
