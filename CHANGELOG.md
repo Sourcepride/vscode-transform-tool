@@ -7,3 +7,23 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [Unreleased]
 
 - Initial release
+
+## [0.0.1] - 2024-04-22
+
+### Added
+
+- convert json to typescript
+- convert json to zod schema
+- json to mysql conversion
+- json to graphql conversion
+- javascript object to json conversion
+- javascript object to typescript conversion
+- toml to yaml conversion
+- yaml to toml conversion
+- copy button on both editors
+- sync vscode theme information with settings
+- easy side bar navigation
+- open with command
+- transform editior selected text
+
+[0.0.1]: https://github.com/Sourcepride/vscode-transorm-tools/releases/tag/0.0.1

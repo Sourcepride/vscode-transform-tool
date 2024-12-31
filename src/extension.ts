@@ -22,9 +22,9 @@ export function activate(context: vscode.ExtensionContext) {
 
   const disposable = vscode.commands.registerCommand(
     "transform.start",
-    ({ arguments: args }) => {
-      const [type, content] = args;
-      tool = isToolString(type) ? type : tool;
+    (args) => {
+      const [type, content] = args?.arguments ?? [];
+      tool = isToolString(type ?? "") ? type : tool;
       webviewManager = WebviewManager.getManager();
       currentPanel = webviewManager.getOrCreateWebView(
         context,

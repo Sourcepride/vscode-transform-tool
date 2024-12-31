@@ -57,12 +57,17 @@ export class WebviewManager {
 
   private update(context: vscode.ExtensionContext, settings: string) {
     if (this.panel) {
+      this.panel.iconPath = vscode.Uri.file(
+        path.join(context.extensionPath, "assets/logo.png")
+      );
+
       const scriptPath = vscode.Uri.file(
         path.join(context.extensionPath, "out/web/web.js")
       );
       const stylesPath = vscode.Uri.file(
         path.join(context.extensionPath, "out/web/main.css")
       );
+
       // ALL URLS IN OTPUT FOLDER CONVERTED TO VSCODE URI FOR WEBVIEW [css, js scripts,  worker scrpts etc]
       const scriptUri = this.panel.webview.asWebviewUri(scriptPath);
       const stylesUri = this.panel.webview.asWebviewUri(stylesPath);

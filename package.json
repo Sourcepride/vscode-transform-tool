@@ -9,15 +9,13 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [
-    "onView:transform-tool-tree"
-  ],
+  "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
     "viewsWelcome": [
       {
         "view": "transform-tool",
-        "contents": "Please wait Loading... "
+        "contents": "Please wait Loading..."
       }
     ],
     "viewsContainers": {
@@ -45,7 +43,7 @@
       },
       {
         "command": "transform-tools.processSelectedText",
-        "title": "Process Selected Text",
+        "title": "Transform Selected Text",
         "category": "Transform Tool"
       }
     ],
