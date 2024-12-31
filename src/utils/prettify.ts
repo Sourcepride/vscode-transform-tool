@@ -28,15 +28,6 @@ const PLUGINS = [
 export async function prettify(language: string, value: string) {
   let result;
 
-  // TODO:  better formater
-  /*
-     printWidth: 80,
-      tabWidth: 2,
-      singleQuote: true,
-      semi: true,
-      useTabs: false,
-  */
-
   const langInSmLetters = language.toLocaleLowerCase();
   if (language === "json") {
     result = JSON.stringify(JSON.parse(value), null, 2);

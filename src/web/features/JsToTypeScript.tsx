@@ -13,7 +13,7 @@ export default function JsObjectToTypescript() {
     JsonToTS(JSON.parse(result)).forEach((typeInterface) => {
       stringResult += `${typeInterface} \n`;
     });
-    // TODO:FEATURE use settings to convert interphase to type
+    /// TODO:FEATURE use settings to choose which is ts decleration is preffered interphase or type
     return stringResult;
   }, []);
 

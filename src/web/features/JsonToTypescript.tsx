@@ -18,7 +18,7 @@ const JsonToTypescript: React.FC<JsonToTypescriptProps> = ({}) => {
     JsonToTS(JSON.parse(value)).forEach((typeInterface) => {
       stringResult += `${typeInterface} \n`;
     });
-    // TODO:FEATURE use settings to convert interphase to type
+    // TODO:FEATURE use settings to choose which is ts decleration is preffered interphase or type
     return stringResult;
   }, []);
 

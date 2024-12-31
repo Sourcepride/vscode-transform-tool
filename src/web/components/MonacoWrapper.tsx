@@ -49,7 +49,7 @@ export const MonacoWrapper: React.FC<MonacoWrapperProps> = ({
   }, [monaco, settings]);
 
   function handleEditorDidMount(editor: any, monaco: Monaco) {
-    monaco.editor.setTheme(THEME_MAP[settings.currentTheme] || "vs-dark"); // TODO:  use vscode default theme
+    monaco.editor.setTheme(THEME_MAP[settings.currentTheme] || "vs-dark");
     monacoRef.current = editor;
   }
 

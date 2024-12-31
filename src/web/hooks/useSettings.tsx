@@ -11,8 +11,7 @@ const DEFAULT_SETTINGS: Settings = {
 };
 
 const useSettings = () => {
-  //TODO: get updated settings from message api
-  const updatedSettings = useMessage("theme"); //useSyncExternalStore(subscribe, getSnapShot);
+  const updatedSettings = useMessage("settings"); //useSyncExternalStore(subscribe, getSnapShot);
   let currentSettings = (window as any).viewSettings || DEFAULT_SETTINGS;
   if (updatedSettings) {
     try {

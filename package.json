@@ -47,11 +47,6 @@
         "command": "transform-tools.processSelectedText",
         "title": "Process Selected Text",
         "category": "Transform Tool"
-      },
-      {
-        "command": "transform-tools.contextMenuOption",
-        "title": "Context Menu Option",
-        "category": "Transform Tool"
       }
     ],
     "menus": {

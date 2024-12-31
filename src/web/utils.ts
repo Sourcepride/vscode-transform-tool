@@ -12,10 +12,10 @@ export function editorOptions({
   renderValidationDecorations: "on" | "off" | "editable";
 }) {
   return {
-    fontSize: fontSize || 12, // TODO:VSCODE get value from vscode
+    fontSize: fontSize || 12,
     readOnly: !editable,
     codeLens: false,
-    fontFamily: fontFamily || "Menlo, Consolas, monospace, sans-serif", // TODO: VSCODE get value from vscode
+    fontFamily: fontFamily || "Menlo, Consolas, monospace, sans-serif",
     fontWeight,
     minimap: {
       enabled: false,
