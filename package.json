@@ -10,7 +10,7 @@
     "url": "https://github.com/Sourcepride/vscode-transform-tool.git"
   },
   "engines": {
-    "vscode": "^1.96.0"
+    "vscode": "^1.74.0"
   },
   "categories": [
     "Other"
