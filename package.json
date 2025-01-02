@@ -2,7 +2,7 @@
   "name": "transform-tool",
   "displayName": "transform-tool",
   "description": "convert from one schema, form,  or type to another",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "Sourcepride",
   "icon": "assets/logo.png",
   "repository": {
