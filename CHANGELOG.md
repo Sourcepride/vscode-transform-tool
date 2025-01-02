@@ -8,6 +8,12 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Initial release
 
+## [0.0.2] - 2025-01-02
+
+### Patch
+
+- vscode version support ^1.714.0
+
 ## [0.0.1] - 2024-04-22
 
 ### Added
