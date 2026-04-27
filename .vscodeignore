@@ -19,6 +19,7 @@ postcss.config.js
 tailwind.config.js
 components.json
 *.vsix
+node_modules/**
 node_modules/@vscode/**
 node_modules/@types/**
 node_modules/@eslint/**
