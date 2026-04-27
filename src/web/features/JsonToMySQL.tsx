@@ -1,5 +1,4 @@
-import gs from "generate-schema";
-import { useCallback } from "react";
+import { transformers } from "@/src/transformers";
 import ConversionWrapper from "../components/ConversionWrapper";
 
 const DEFAULT = `
@@ -12,9 +11,7 @@ const DEFAULT = `
 `;
 
 export default function JsonToMysql() {
-  const transformer = useCallback(({ value }: { value: string }) => {
-    return gs.mysql(JSON.parse(value));
-  }, []);
+  const transformer = ({value}:{value: string})=> Promise.resolve(transformers["json_to_mysql"](value));
 
   return (
     <ConversionWrapper

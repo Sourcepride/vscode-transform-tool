@@ -1,0 +1,35 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.extension.tsbuildinfo",
+    "module": "CommonJS",
+    "target": "ES2022",
+    "outDir": "out",
+    "lib": ["ES2022"],
+    "sourceMap": true,
+    "rootDir": "src",
+    "strict": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "noEmit": false,
+    "jsx": "react",
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "types": ["node", "mocha"]
+  },
+  "include": [
+    "src/extension.ts",
+    "src/transformers.ts",
+    "src/helpers.ts",
+    "src/constants.ts",
+    "src/selectTextProcessor.ts",
+    "src/treeProvider.tsx",
+    "src/webviewManager.ts",
+    "src/index.ts",
+    "src/test/**/*.ts"
+  ],
+  "exclude": ["node_modules", "src/web", "src/workers"]
+}

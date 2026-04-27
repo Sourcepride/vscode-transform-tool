@@ -1,4 +1,5 @@
 import react from "@vitejs/plugin-react";
+import monacoEditorPlugin from "vite-plugin-monaco-editor";
 import * as path from "path";
 import tailwindcss from "tailwindcss";
 import * as url from "url";
@@ -8,7 +9,7 @@ const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [monacoEditorPlugin({}), react()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./"),

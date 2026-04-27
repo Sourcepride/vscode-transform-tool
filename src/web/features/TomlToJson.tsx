@@ -1,5 +1,4 @@
-import { parse } from "@iarna/toml";
-import { useCallback } from "react";
+import { transformers } from "@/src/transformers";
 import ConversionWrapper from "../components/ConversionWrapper";
 
 const DEFAULT = `
@@ -14,11 +13,7 @@ name = "Osonwa Enterprise"
 `;
 
 export default function TomlToJson() {
-  const transformer = useCallback(
-    ({ value }: { value: string }) =>
-      Promise.resolve(JSON.stringify(parse(value))),
-    []
-  );
+  const transformer = ({value}:{value: string})=> Promise.resolve(transformers["toml_to_json"](value));
 
   return (
     <ConversionWrapper

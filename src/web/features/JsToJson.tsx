@@ -1,12 +1,10 @@
-import { useCallback } from "react";
+import { transformers } from "@/src/transformers";
 import ConversionWrapper from "../components/ConversionWrapper";
 
 const DEFAULT = "{hello: {nice: '123'}}";
 
 export default function JsObjectToJson() {
-  const transformer = useCallback(async ({ value }: { value: string }) => {
-    return JSON.stringify(eval("(" + value + ")"), null, 2);
-  }, []);
+ const transformer = ({value}:{value: string})=> Promise.resolve(transformers["js_object_to_json"](value));
 
   return (
     <ConversionWrapper

@@ -1,8 +1,6 @@
-import JsonToTS from "json-to-ts";
-import { useCallback } from "react";
+import { transformers } from "@/src/transformers";
 import ConversionWrapper from "../components/ConversionWrapper";
 
-type JsonToTypescriptProps = {};
 
 const DEFAULT = `
 {
@@ -12,15 +10,9 @@ const DEFAULT = `
 }
 `;
 
-const JsonToTypescript: React.FC<JsonToTypescriptProps> = ({}) => {
-  const transformer = useCallback(async ({ value }: { value: string }) => {
-    let stringResult = "";
-    JsonToTS(JSON.parse(value)).forEach((typeInterface) => {
-      stringResult += `${typeInterface} \n`;
-    });
-    // TODO:FEATURE use settings to choose which is ts decleration is preffered interphase or type
-    return stringResult;
-  }, []);
+const JsonToTypescript= () => {
+  
+  const transformer = ({value}:{value: string})=> Promise.resolve(transformers["json_to_typescript"](value));
 
   return (
     <ConversionWrapper

@@ -1,21 +1,13 @@
-import JsonToTS from "json-to-ts";
-import { useCallback } from "react";
+import { transformers } from "@/src/transformers";
 import ConversionWrapper from "../components/ConversionWrapper";
 
 const DEFAULT = "{chima: [1,2,3]}";
+
+
 export default function JsObjectToTypescript() {
   const name = "JS Object to Typescript";
 
-  const transformer = useCallback(async ({ value }: { value: string }) => {
-    const result = JSON.stringify(eval("(" + value + ")"), null, 2);
-
-    let stringResult = "";
-    JsonToTS(JSON.parse(result)).forEach((typeInterface) => {
-      stringResult += `${typeInterface} \n`;
-    });
-    /// TODO:FEATURE use settings to choose which is ts decleration is preffered interphase or type
-    return stringResult;
-  }, []);
+  const transformer = ({value}:{value: string})=> Promise.resolve(transformers["js_object_to_typescript"](value));
 
   return (
     <ConversionWrapper

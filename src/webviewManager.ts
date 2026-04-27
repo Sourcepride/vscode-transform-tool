@@ -43,6 +43,9 @@ export class WebviewManager {
         {
           enableScripts: true,
           retainContextWhenHidden: true,
+          localResourceRoots: [
+            vscode.Uri.joinPath(context.extensionUri, "out", "web"),
+          ],
         }
       );
 
@@ -78,6 +81,7 @@ export class WebviewManager {
       );
 
       this.panel.webview.html = getMainHtmlContent({
+        cspSource: this.panel.webview.cspSource,
         scriptUri,
         stylesUri,
         workers: {

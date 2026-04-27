@@ -62,7 +62,7 @@
 
 // TODO:  figure out a way to fix
 // NOTE: do not remove first arg:  why? vscode works differently from browsers and direct url to file cannot be used here thats why the Worker parameter is not use it exists so vite can bundle it
-export async function getWorker(Worker: any, workerName: string) {
+export async function getWorker(_Worker: any, workerName: string) {
   const windowObj = window as any;
   const res = await fetch(windowObj?.[workerName] || "");
   const blob = await res.blob();

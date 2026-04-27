@@ -1,12 +1,9 @@
-import { useCallback } from "react";
-import yaml from "yaml";
+import { transformers } from "@/src/transformers";
 import ConversionWrapper from "../components/ConversionWrapper";
 
 const DEFAULT = `okah: "corn"`;
 export default function YamlToJson() {
-  const transformer = useCallback(async ({ value }: { value: string }) => {
-    return JSON.stringify(yaml.parse(value));
-  }, []);
+  const transformer = ({value}:{value: string})=> Promise.resolve(transformers["yaml_to_json"](value));
 
   return (
     <ConversionWrapper

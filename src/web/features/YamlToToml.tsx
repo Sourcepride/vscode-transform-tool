@@ -1,14 +1,9 @@
-import toml from "@iarna/toml";
-import { useCallback } from "react";
-import yaml from "yaml";
+import { transformers } from "@/src/transformers";
 import ConversionWrapper from "../components/ConversionWrapper";
 
 const DEFAULT = `spaceX: "Elon"`;
 export default function YamlToToml() {
-  const transformer = useCallback(async ({ value }: { value: string }) => {
-    return toml.stringify(yaml.parse(value));
-  }, []);
-
+ const transformer = ({value}:{value: string})=> Promise.resolve(transformers["yaml_to_toml"](value));
   return (
     <ConversionWrapper
       transformer={transformer}

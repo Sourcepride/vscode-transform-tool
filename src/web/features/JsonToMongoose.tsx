@@ -1,6 +1,5 @@
+import { transformers } from "@/src/transformers";
 import { Buffer as Buff } from "buffer";
-import gs from "generate-schema";
-import { useCallback } from "react";
 import ConversionWrapper from "../components/ConversionWrapper";
 
 window.Buffer = window.Buffer || Buff;
@@ -12,10 +11,7 @@ const DEFAULT = `
 `.trim();
 
 export default function JsonToMongoose() {
-  const transformer = useCallback(async ({ value }: { value: string }) => {
-    return JSON.stringify(gs.mongoose(JSON.parse(value)), null, 2);
-  }, []);
-
+  const transformer = ({value}:{value: string})=> Promise.resolve(transformers["json_to_mongoose"](value))
   return (
     <ConversionWrapper
       transformer={transformer}

@@ -2,7 +2,7 @@
   "name": "transform-tool",
   "displayName": "transform-tool",
   "description": "convert from one schema, form,  or type to another",
-  "version": "0.0.2",
+  "version": "0.0.5",
   "publisher": "Sourcepride",
   "icon": "assets/logo.png",
   "repository": {
@@ -51,6 +51,61 @@
         "command": "transform-tools.processSelectedText",
         "title": "Transform Selected Text",
         "category": "Transform Tool"
+      },
+      {
+        "command": "transform-tools.jsonToTypeScript",
+        "title": "JSON to TypeScript",
+        "category": "Transform Tool"
+      },
+      {
+        "command": "transform-tools.jsonToZod",
+        "title": "JSON to Zod Schema",
+        "category": "Transform Tool"
+      },
+      {
+        "command": "transform-tools.jsonToGraphQL",
+        "title": "JSON to GraphQL",
+        "category": "Transform Tool"
+      },
+      {
+        "command": "transform-tools.jsonToMySQL",
+        "title": "JSON to MySQL Schema",
+        "category": "Transform Tool"
+      },
+      {
+        "command": "transform-tools.jsonToMongoose",
+        "title": "JSON to Mongoose Schema",
+        "category": "Transform Tool"
+      },
+      {
+        "command": "transform-tools.jsObjectToJson",
+        "title": "JavaScript Object to JSON",
+        "category": "Transform Tool"
+      },
+      {
+        "command": "transform-tools.jsObjectToTypeScript",
+        "title": "JavaScript Object to TypeScript",
+        "category": "Transform Tool"
+      },
+      {
+        "command": "transform-tools.yamlToJson",
+        "title": "YAML to JSON",
+        "category": "Transform Tool"
+      },
+      {
+        "command": "transform-tools.yamlToToml",
+        "title": "YAML to TOML",
+        "category": "Transform Tool"
+      },
+      {
+        "command": "transform-tools.tomlToYaml",
+        "title": "TOML to YAML",
+        "category": "Transform Tool"
+      },
+      {
+        "command": "transform-tools.tomlToJson",
+        "title": "TOML to JSON",
+        "category": "Transform Tool"
       }
     ],
     "menus": {
@@ -65,19 +120,21 @@
   },
   "scripts": {
     "old:vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
+    "compile": "tsc -p ./tsconfig.extension.json",
+    "compile:all": "npm run compile && npm run vite:build",
+    "watch": "tsc -watch -p ./tsconfig.extension.json",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src",
     "test": "vscode-test",
     "vite:build": "tsc -b && vite build",
     "vite:watch": "vite build --watch",
     "vite:preview": "vite preview",
-    "vscode:prepublish": "npm run esbuild-base -- --minify",
+    "vscode:prepublish": "npm run vite:build && npm run esbuild-base -- --minify",
     "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node",
     "esbuild": "npm run esbuild-base -- --sourcemap",
     "esbuild-watch": "npm run esbuild-base -- --sourcemap --watch",
-    "test-compile": "tsc -p ./"
+    "test-compile": "tsc -p ./tsconfig.extension.json",
+    "package": "vsce package"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
@@ -91,6 +148,7 @@
     "@vitejs/plugin-react": "^4.3.4",
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1",
+    "@vscode/vsce": "^3.7.1",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.16.0",
     "eslint-plugin-react-hooks": "^5.0.0",
@@ -104,15 +162,13 @@
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.18.2",
     "vite": "^6.0.6",
-    "vscode": "^1.1.34",
+    "vite-plugin-monaco-editor": "^1.1.0",
     "worker-loader": "^3.0.8"
   },
   "dependencies": {
-    "@iarna/toml": "^2.2.5",
     "@monaco-editor/react": "^4.6.0",
     "@radix-ui/react-slot": "^1.1.1",
     "@radix-ui/react-tooltip": "^1.1.6",
-    "@walmartlabs/json-to-simple-graphql-schema": "^3.0.1",
     "@xml-tools/parser": "^1.0.11",
     "buffer": "^6.0.3",
     "class-variance-authority": "^0.7.1",
@@ -123,9 +179,12 @@
     "json-schema-to-zod": "^2.6.0",
     "json-to-ts": "^2.1.0",
     "json-to-zod": "^1.1.2",
+    "json5": "^2.2.3",
+    "monaco-editor": "^0.52.2",
     "lucide-react": "^0.469.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "smol-toml": "^1.6.0",
     "sql-formatter": "^15.4.8",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
