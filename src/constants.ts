@@ -8,12 +8,7 @@ export const NAV = {
   ] as const,
   env: ["json_to_env", "yaml_to_env"] as const,
   Javascript: ["js_object_to_json", "js_object_to_typescript"] as const,
-  Others: [
-    "yaml_to_json",
-    "yaml_to_toml",
-    "toml_to_yamal",
-    "toml_to_json",
-  ] as const,
+
   cURL: [
     "curl_to_node_axios",
     "curl_to_node",
@@ -23,6 +18,12 @@ export const NAV = {
   ] as const,
   Csv: ["csv_to_json", "json_to_csv"] as const,
   Web: ["html_to_react", "css_to_tailwind"] as const,
+  Others: [
+    "yaml_to_json",
+    "yaml_to_toml",
+    "toml_to_yamal",
+    "toml_to_json",
+  ] as const,
 };
 
 export const combinedToolsArray = [
@@ -143,7 +144,8 @@ export const TRANSFORMATION_INFO: Record<
   },
   curl_to_node_axios: {
     expectedFormat: "curl command (bash-style)",
-    example: "curl -X POST https://api.example.com/v1 -H 'Content-Type: application/json' -d '{\"a\":1}'",
+    example:
+      "curl -X POST https://api.example.com/v1 -H 'Content-Type: application/json' -d '{\"a\":1}'",
     description:
       "Converts a curl command to Node.js code using the axios HTTP client.",
   },

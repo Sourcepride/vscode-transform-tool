@@ -1,18 +1,22 @@
-import initRuff, { format as formatPython } from "@wasm-fmt/ruff_fmt/vite";
+import initRuff, { format as formatPython } from "@wasm-fmt/ruff_fmt/web";
 import { prettifyCore } from "./prettifyCore";
 
 let ruffInit: Promise<void> | null = null;
 
 function ensureRuffInit(): Promise<void> {
   if (!ruffInit) {
-    ruffInit = initRuff().then(() => undefined);
+    const wasmUrl =
+      typeof window !== "undefined" ? window.__TRANSFORM_RUFF_WASM__ : undefined;
+    // `./vite` + `?init` resolves WASM from the JS chunk’s `import.meta.url`, which is wrong in a
+    // VS Code webview (empty fetch → "BufferSource argument is empty"). `./web` + explicit URL fixes it.
+    ruffInit = initRuff(wasmUrl).then(() => undefined);
   }
   return ruffInit;
 }
 
 /**
  * Full formatter: Prettier/sql/json/go/java in `prettifyCore`, Python via Ruff WASM on the **main thread**
- * (blob workers break Ruff’s WASM `fetch` / `import.meta.url` resolution in VS Code webviews).
+ * (blob workers break Ruff; WASM URL comes from `window.__TRANSFORM_RUFF_WASM__` in the webview HTML).
  */
 export async function prettify(language: string, value: string) {
   const lang = (language || "").toLowerCase();

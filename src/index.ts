@@ -9,6 +9,8 @@ type mainHtmlProps = {
   /** `out/web/tree-sitter*.wasm` as webview URIs for `curl-web-parser` (fetch needs `connect-src ${cspSource}`). */
   treeSitterWasmUri: vscode.Uri;
   treeSitterBashWasmUri: vscode.Uri;
+  /** `out/web/ruff_fmt_bg.wasm` — explicit URL required; Vite `./vite` wasm init breaks on split chunks in webviews. */
+  ruffFmtWasmUri: vscode.Uri;
   /** Labels → webview URLs for `out/web/monacoeditorwork/*.bundle.js` (vite-plugin-monaco-editor output). */
   monacoWorkerPaths: Record<string, string>;
   settings: string;
@@ -21,6 +23,7 @@ export function getMainHtmlContent({
   workers: { prettierUri },
   treeSitterWasmUri,
   treeSitterBashWasmUri,
+  ruffFmtWasmUri,
   monacoWorkerPaths,
   settings,
 }: mainHtmlProps) {
@@ -48,6 +51,7 @@ export function getMainHtmlContent({
             window.prettierUri=${JSON.stringify(String(prettierUri))};
             window.__TRANSFORM_TREE_SITTER_WASM__=${JSON.stringify(String(treeSitterWasmUri))};
             window.__TRANSFORM_TREE_SITTER_BASH_WASM__=${JSON.stringify(String(treeSitterBashWasmUri))};
+            window.__TRANSFORM_RUFF_WASM__=${JSON.stringify(String(ruffFmtWasmUri))};
             window.viewSettings=${settings};
       </script>
     </head>

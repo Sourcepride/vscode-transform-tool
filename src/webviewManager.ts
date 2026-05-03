@@ -116,6 +116,11 @@ export class WebviewManager {
           path.join(context.extensionPath, "out/web/tree-sitter-bash.wasm")
         )
       );
+      const ruffFmtWasmUri = this.panel.webview.asWebviewUri(
+        vscode.Uri.file(
+          path.join(context.extensionPath, "out/web/ruff_fmt_bg.wasm")
+        )
+      );
       const monacoWorkerPaths = monacoWorkerPathMap(
         this.panel.webview,
         context.extensionPath
@@ -130,6 +135,7 @@ export class WebviewManager {
         },
         treeSitterWasmUri,
         treeSitterBashWasmUri,
+        ruffFmtWasmUri,
         monacoWorkerPaths,
         settings,
       });

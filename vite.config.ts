@@ -55,6 +55,9 @@ const curlconverterShellParserShim = (): Plugin => ({
 
 // https://vite.dev/config/
 export default defineConfig({
+  optimizeDeps: {
+    exclude: ["@wasm-fmt/ruff_fmt"],
+  },
   plugins: [
     curlconverterShellParserShim(),
     monacoEditorPlugin({}),
