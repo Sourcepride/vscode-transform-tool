@@ -1,7 +1,20 @@
 {
   "name": "transform-tool",
-  "displayName": "transform-tool",
-  "description": "convert from one schema, form,  or type to another",
+  "displayName": "AnyConverter: JSON, TS, Zod, YAML",
+  "description": "Instantly convert between JSON, TypeScript, Zod, GraphQL, YAML, and more. A high-performance transformation tool for modern developers.",
+  "keywords": [
+    "json to typescript",
+    "json to zod",
+    "json to graphql",
+    "yaml to json",
+    "json converter",
+    "schema generator",
+    "typescript",
+    "zod",
+    "transform",
+    "converter",
+    "curl to axios"
+  ],
   "version": "0.0.5",
   "publisher": "Sourcepride",
   "icon": "assets/logo.png",
@@ -15,15 +28,11 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onView:transform-tool-tree"
+  ],
   "main": "./out/extension.js",
   "contributes": {
-    "viewsWelcome": [
-      {
-        "view": "transform-tool",
-        "contents": "Please wait Loading..."
-      }
-    ],
     "viewsContainers": {
       "activitybar": [
         {
@@ -78,6 +87,16 @@
         "category": "Transform Tool"
       },
       {
+        "command": "transform-tools.jsonToEnv",
+        "title": "JSON to Environment (.env)",
+        "category": "Transform Tool"
+      },
+      {
+        "command": "transform-tools.jsonToCsv",
+        "title": "JSON to CSV",
+        "category": "Transform Tool"
+      },
+      {
         "command": "transform-tools.jsObjectToJson",
         "title": "JavaScript Object to JSON",
         "category": "Transform Tool"
@@ -88,8 +107,18 @@
         "category": "Transform Tool"
       },
       {
+        "command": "transform-tools.csvToJson",
+        "title": "CSV to JSON",
+        "category": "Transform Tool"
+      },
+      {
         "command": "transform-tools.yamlToJson",
         "title": "YAML to JSON",
+        "category": "Transform Tool"
+      },
+      {
+        "command": "transform-tools.yamlToEnv",
+        "title": "YAML to Environment (.env)",
         "category": "Transform Tool"
       },
       {
@@ -106,6 +135,41 @@
         "command": "transform-tools.tomlToJson",
         "title": "TOML to JSON",
         "category": "Transform Tool"
+      },
+      {
+        "command": "transform-tools.curlToNodeAxios",
+        "title": "cURL to Node (axios)",
+        "category": "Transform Tool"
+      },
+      {
+        "command": "transform-tools.curlToNode",
+        "title": "cURL to Node (fetch)",
+        "category": "Transform Tool"
+      },
+      {
+        "command": "transform-tools.curlToPython",
+        "title": "cURL to Python (requests)",
+        "category": "Transform Tool"
+      },
+      {
+        "command": "transform-tools.curlToGo",
+        "title": "cURL to Go",
+        "category": "Transform Tool"
+      },
+      {
+        "command": "transform-tools.curlToJava",
+        "title": "cURL to Java",
+        "category": "Transform Tool"
+      },
+      {
+        "command": "transform-tools.htmlToReact",
+        "title": "HTML to React (TSX)",
+        "category": "Transform Tool"
+      },
+      {
+        "command": "transform-tools.cssToTailwind",
+        "title": "CSS to Tailwind",
+        "category": "Transform Tool"
       }
     ],
     "menus": {
@@ -120,9 +184,9 @@
   },
   "scripts": {
     "old:vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./tsconfig.extension.json",
+    "compile": "tsc -b ./tsconfig.extension.json --force",
     "compile:all": "npm run compile && npm run vite:build",
-    "watch": "tsc -watch -p ./tsconfig.extension.json",
+    "watch": "tsc -b ./tsconfig.extension.json --watch",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src",
     "test": "vscode-test",
@@ -130,10 +194,10 @@
     "vite:watch": "vite build --watch",
     "vite:preview": "vite preview",
     "vscode:prepublish": "npm run vite:build && npm run esbuild-base -- --minify",
-    "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node",
+    "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --external:curlconverter --format=cjs --platform=node",
     "esbuild": "npm run esbuild-base -- --sourcemap",
     "esbuild-watch": "npm run esbuild-base -- --sourcemap --watch",
-    "test-compile": "tsc -p ./tsconfig.extension.json",
+    "test-compile": "tsc -b ./tsconfig.extension.json --force",
     "package": "vsce package"
   },
   "devDependencies": {
@@ -149,14 +213,17 @@
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1",
     "@vscode/vsce": "^3.7.1",
+    "@wasm-fmt/ruff_fmt": "^0.15.11",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.16.0",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.16",
     "globals": "^15.14.0",
+    "gofmt.js": "^0.0.2",
     "postcss": "^8.4.49",
-    "prettier": "^3.4.2",
+    "prettier": "^3.8.3",
     "prettier-plugin-embed": "^0.4.15",
+    "prettier-plugin-java": "^2.8.1",
     "prettier-plugin-sql": "^0.18.1",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.7.2",
@@ -166,22 +233,29 @@
     "worker-loader": "^3.0.8"
   },
   "dependencies": {
+    "@json2csv/plainjs": "^7.0.6",
     "@monaco-editor/react": "^4.6.0",
     "@radix-ui/react-slot": "^1.1.1",
     "@radix-ui/react-tooltip": "^1.1.6",
+    "@sourcepride/json-to-env": "^1.0.1",
+    "@sourcepride/yaml-to-env": "^1.0.0",
     "@xml-tools/parser": "^1.0.11",
     "buffer": "^6.0.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "convert-csv-to-json": "^4.38.0",
+    "css-to-tailwind-translator": "^1.2.8",
+    "curlconverter": "^4.12.0",
     "generate-schema": "^2.6.0",
     "graphql": "^16.10.0",
+    "html-to-react": "^1.7.0",
     "json-schema-to-typescript": "^15.0.3",
     "json-schema-to-zod": "^2.6.0",
     "json-to-ts": "^2.1.0",
     "json-to-zod": "^1.1.2",
     "json5": "^2.2.3",
-    "monaco-editor": "^0.52.2",
     "lucide-react": "^0.469.0",
+    "monaco-editor": "^0.52.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "smol-toml": "^1.6.0",

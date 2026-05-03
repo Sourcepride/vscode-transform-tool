@@ -1,0 +1,20 @@
+npm i html-to-react
+https://www.npmjs.com/package/html-to-react
+is-svg
+npm i css-to-tailwind-translator
+npm i curlconverter  https://www.npmjs.com/package/curlconverter (curl to node , node-axios, python-requests, go, rust, java)
+
+csv to json 
+https://www.npmjs.com/package/convert-csv-to-json
+
+json to csv
+https://www.npmjs.com/package/@json2csv/plainjsx
+
+
+future 
+openapi to typescript
+https://github.com/openapi-ts/openapi-typescript
+
+manual json-to-env and env-to-json yaml_to_env
+sanitize inputs and output 
+publish the package on npm registry and use 

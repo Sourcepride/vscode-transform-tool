@@ -9,6 +9,9 @@ import * as typescriptParser from "prettier/plugins/typescript";
 import * as yamlParser from "prettier/plugins/yaml";
 import prettier from "prettier/standalone";
 import { format } from "sql-formatter";
+import gofmt from "gofmt.js";
+import javaPlugin from "prettier-plugin-java";
+import initRuff, { format as formatPython } from "@wasm-fmt/ruff_fmt/vite";
 import { prettierParsers } from "./prettier";
 
 const PLUGINS = [
@@ -21,29 +24,82 @@ const PLUGINS = [
   postcssParser,
   htmlParser,
   graphqlParser,
-  // embed,
-  // sqlParser,
+  javaPlugin,
 ];
 
-export async function prettify(language: string, value: string) {
-  let result;
+let ruffInit: Promise<void> | null = null;
 
-  const langInSmLetters = language.toLocaleLowerCase();
+function ensureRuffInit(): Promise<void> {
+  if (!ruffInit) {
+    ruffInit = initRuff().then(() => undefined);
+  }
+  return ruffInit;
+}
+
+/**
+ * Map Monaco / UI language ids to a Prettier parser that exists in our standalone
+ * `plugins` list. Anything else skips Prettier (avoids "Couldn't resolve parser").
+ */
+function resolvePrettierParser(language: string): string | undefined {
+  const key = language.toLowerCase();
+  const fromMap = prettierParsers[key as keyof typeof prettierParsers];
+  if (fromMap) {
+    return fromMap;
+  }
+  const monacoToParser: Record<string, string> = {
+    typescript: "typescript",
+    javascript: "babel",
+    jsx: "babel",
+    yaml: "yaml",
+    graphql: "graphql",
+    css: "postcss",
+    scss: "postcss",
+    less: "postcss",
+    html: "html",
+    markdown: "markdown",
+    flow: "flow",
+    java: "java",
+  };
+  return monacoToParser[key];
+}
+
+export async function prettify(language: string, value: string) {
   if (language === "json") {
-    result = JSON.stringify(JSON.parse(value), null, 2);
-  } else if (["toml"].includes(langInSmLetters)) {
-    result = value;
-  } else if (["sql"].includes(langInSmLetters)) {
-    result = format(value, { language: language as any });
-  } else {
-    result = prettier.format(value, {
-      parser:
-        prettierParsers[language as unknown as keyof typeof prettierParsers] ||
-        language,
-      plugins: PLUGINS,
-      semi: false,
+    return JSON.stringify(JSON.parse(value), null, 2);
+  }
+
+  const lang = (language || "").toLowerCase();
+  if (lang === "toml") {
+    return value;
+  }
+  if (lang === "sql") {
+    return format(value, { language: language as any });
+  }
+
+  if (lang === "go") {
+    const out = gofmt(value);
+    return typeof out === "string" ? out : value;
+  }
+
+  if (lang === "python") {
+    await ensureRuffInit();
+    return formatPython(value, "snippet.py", {
+      indent_style: "space",
+      indent_width: 4,
+      line_width: 88,
+      quote_style: "double",
+      magic_trailing_comma: "respect",
     });
   }
 
-  return result;
+  const parser = resolvePrettierParser(language);
+  if (!parser) {
+    return value;
+  }
+
+  return prettier.format(value, {
+    parser,
+    plugins: PLUGINS,
+    semi: false,
+  });
 }

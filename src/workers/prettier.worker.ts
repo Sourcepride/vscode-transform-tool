@@ -1,11 +1,10 @@
 import { prettify } from "@/src/utils/prettify";
-import { BuiltInParserName } from "prettier";
 
 interface Data {
   data: {
     payload: {
       value: string;
-      language: BuiltInParserName;
+      language: string;
     };
     id: string | number;
   };

@@ -156,12 +156,23 @@ export function activate(context: vscode.ExtensionContext) {
     ["transform-tools.jsonToGraphQL", "json_to_graphql"],
     ["transform-tools.jsonToMySQL", "json_to_mysql"],
     ["transform-tools.jsonToMongoose", "json_to_mongoose"],
+    ["transform-tools.jsonToEnv", "json_to_env"],
+    ["transform-tools.jsonToCsv", "json_to_csv"],
     ["transform-tools.jsObjectToJson", "js_object_to_json"],
     ["transform-tools.jsObjectToTypeScript", "js_object_to_typescript"],
+    ["transform-tools.csvToJson", "csv_to_json"],
     ["transform-tools.yamlToJson", "yaml_to_json"],
+    ["transform-tools.yamlToEnv", "yaml_to_env"],
     ["transform-tools.yamlToToml", "yaml_to_toml"],
     ["transform-tools.tomlToYaml", "toml_to_yamal"],
     ["transform-tools.tomlToJson", "toml_to_json"],
+    ["transform-tools.curlToNodeAxios", "curl_to_node_axios"],
+    ["transform-tools.curlToNode", "curl_to_node"],
+    ["transform-tools.curlToPython", "curl_to_python"],
+    ["transform-tools.curlToGo", "curl_to_go"],
+    ["transform-tools.curlToJava", "curl_to_java"],
+    ["transform-tools.htmlToReact", "html_to_react"],
+    ["transform-tools.cssToTailwind", "css_to_tailwind"],
   ];
 
   commandMappings.forEach(([commandId, toolType]) => {

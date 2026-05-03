@@ -19,7 +19,14 @@ postcss.config.js
 tailwind.config.js
 components.json
 *.vsix
-node_modules/**
+node_modules/*
+!node_modules/curlconverter/
+!node_modules/jsesc/
+!node_modules/lossless-json/
+!node_modules/tree-sitter/
+!node_modules/tree-sitter-bash/
+!node_modules/web-tree-sitter/
+!node_modules/yamljs/
 node_modules/@vscode/**
 node_modules/@types/**
 node_modules/@eslint/**
