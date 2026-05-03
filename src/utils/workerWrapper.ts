@@ -66,5 +66,6 @@ export async function getWorker(_Worker: any, workerName: string) {
   const windowObj = window as any;
   const res = await fetch(windowObj?.[workerName] || "");
   const blob = await res.blob();
-  return new window.Worker(URL.createObjectURL(blob));
+  // Vite `worker.format: "es"` emits `export default` — classic workers throw "Unexpected token 'export'".
+  return new window.Worker(URL.createObjectURL(blob), { type: "module" });
 }

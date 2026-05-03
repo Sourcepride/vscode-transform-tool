@@ -23,6 +23,18 @@ monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
 // Use npm monaco (bundled by Vite) instead of loading from cdn.jsdelivr.net — required for VS Code webview CSP.
 loader.config({ monaco });
 
+// `@monaco-editor/loader` resets `MonacoEnvironment` (default CDN paths). Restore webview worker URLs
+// from the host HTML so `EditorSimpleWorker` / `FileAccessImpl.toUri` do not run without a resolver.
+const monacoPaths = window.__MONACO_WORKER_PATHS__;
+if (monacoPaths && typeof monacoPaths === "object") {
+  self.MonacoEnvironment = {
+    globalAPI: false,
+    getWorkerUrl(_moduleId: string, label: string) {
+      return monacoPaths[label] ?? monacoPaths["editorWorkerService"]!;
+    },
+  };
+}
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <App />

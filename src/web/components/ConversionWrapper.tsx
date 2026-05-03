@@ -7,7 +7,7 @@ import EditorPanel from "./EditorPanel";
 import ErrorMessage from "./ErrorMessage";
 import Loading from "./Loading";
 
-let prettierWorker: Worker;
+const FORMAT_TIMEOUT_MS = 60_000;
 
 type ConversionWrapperProps = {
   transformer: transformer;
@@ -22,7 +22,6 @@ type ConversionWrapperProps = {
 const ConversionWrapper: React.FC<ConversionWrapperProps> = ({
   language,
   resultLanguage,
-  // resultTitle,
   defaultResult: defaultResultValue,
   defaultValue,
   title,
@@ -34,31 +33,98 @@ const ConversionWrapper: React.FC<ConversionWrapperProps> = ({
   const [isWorking, setIsWorking] = useState(false);
   const [message, setMessage] = useState("");
 
+  const workerRef = useRef<Worker | null>(null);
+  const workerInitRef = useRef<Promise<Worker> | null>(null);
+  const latestRequestIdRef = useRef(0);
+  const formatTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const clearFormatTimeout = () => {
+    if (formatTimeoutRef.current) {
+      clearTimeout(formatTimeoutRef.current);
+      formatTimeoutRef.current = null;
+    }
+  };
+
+  const ensurePrettierWorker = async (): Promise<Worker> => {
+    if (workerRef.current) {
+      return workerRef.current;
+    }
+    if (!workerInitRef.current) {
+      workerInitRef.current = (async () => {
+        const w = await getWorker(PrettierWorker, "prettierUri");
+        w.onmessage = (event: MessageEvent) => {
+          clearFormatTimeout();
+          const { id, payload, err } = (event.data || {}) as {
+            id?: number;
+            payload?: string;
+            err?: string;
+          };
+          if (typeof id === "number" && id !== latestRequestIdRef.current) {
+            return;
+          }
+          setIsWorking(false);
+          if (payload !== undefined && payload !== null) {
+            setMessage("");
+            setTransformedResult(payload);
+          } else {
+            setMessage(err || "Could not format output.");
+          }
+        };
+        w.onerror = (e) => {
+          clearFormatTimeout();
+          setIsWorking(false);
+          setMessage(
+            e.message || "Formatter worker failed (see console for details)."
+          );
+        };
+        workerRef.current = w;
+        return w;
+      })();
+    }
+    return workerInitRef.current;
+  };
+
   const changeHandler = async (value: string) => {
+    const requestId = ++latestRequestIdRef.current;
+    clearFormatTimeout();
+    formatTimeoutRef.current = setTimeout(() => {
+      if (requestId !== latestRequestIdRef.current) {
+        return;
+      }
+      setIsWorking(false);
+      setMessage("Formatting timed out; try a smaller snippet or again later.");
+      formatTimeoutRef.current = null;
+    }, FORMAT_TIMEOUT_MS);
+
     try {
       setIsWorking(true);
+      setMessage("");
       const result = await transformer({ value });
-      prettierWorker =
-        prettierWorker || (await getWorker(PrettierWorker, "prettierUri"));
+      const lang = (resultLanguage || "").toLowerCase();
 
-      prettierWorker.postMessage({
-        id: new Date().toISOString(),
+      if (lang === "python") {
+        const { prettify } = await import("@/src/utils/prettify");
+        const out = await prettify(resultLanguage, result);
+        clearFormatTimeout();
+        if (requestId !== latestRequestIdRef.current) {
+          return;
+        }
+        setIsWorking(false);
+        setMessage("");
+        setTransformedResult(out);
+        return;
+      }
+
+      const w = await ensurePrettierWorker();
+      w.postMessage({
+        id: requestId,
         payload: { value: result, language: resultLanguage },
       });
-
-      prettierWorker.onmessage = (event) => {
-        setIsWorking(false);
-        if (event.data?.payload) {
-          setMessage("");
-          setTransformedResult(event.data.payload);
-        } else {
-          setMessage(event.data?.err || "an error occurred could not format!");
-        }
-      };
     } catch (error) {
+      clearFormatTimeout();
       setIsWorking(false);
       console.error(error);
-      setMessage((error as Error).message);
+      setMessage((error as Error).message ?? String(error));
     }
   };
 

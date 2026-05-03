@@ -2,6 +2,33 @@ import * as path from "path";
 import * as vscode from "vscode";
 import { getMainHtmlContent } from ".";
 
+/** Same label aliases as vite-plugin-monaco-editor `getWorkPath` + monaco `getWorker` callers. */
+function monacoWorkerPathMap(
+  webview: vscode.Webview,
+  extensionPath: string
+): Record<string, string> {
+  const dir = path.join(extensionPath, "out/web/monacoeditorwork");
+  const uri = (file: string) =>
+    String(webview.asWebviewUri(vscode.Uri.file(path.join(dir, file))));
+  const editor = uri("editor.worker.bundle.js");
+  const css = uri("css.worker.bundle.js");
+  const html = uri("html.worker.bundle.js");
+  const json = uri("json.worker.bundle.js");
+  const ts = uri("ts.worker.bundle.js");
+  return {
+    editorWorkerService: editor,
+    css,
+    scss: css,
+    less: css,
+    html,
+    handlebars: html,
+    razor: html,
+    json,
+    typescript: ts,
+    javascript: ts,
+  };
+}
+
 export class WebviewManager {
   private static webManager: WebviewManager;
   private panel: vscode.WebviewPanel | undefined = undefined;
@@ -79,6 +106,20 @@ export class WebviewManager {
           path.join(context.extensionPath, "out/web/prettier.worker.js")
         )
       );
+      const treeSitterWasmUri = this.panel.webview.asWebviewUri(
+        vscode.Uri.file(
+          path.join(context.extensionPath, "out/web/tree-sitter.wasm")
+        )
+      );
+      const treeSitterBashWasmUri = this.panel.webview.asWebviewUri(
+        vscode.Uri.file(
+          path.join(context.extensionPath, "out/web/tree-sitter-bash.wasm")
+        )
+      );
+      const monacoWorkerPaths = monacoWorkerPathMap(
+        this.panel.webview,
+        context.extensionPath
+      );
 
       this.panel.webview.html = getMainHtmlContent({
         cspSource: this.panel.webview.cspSource,
@@ -87,6 +128,9 @@ export class WebviewManager {
         workers: {
           prettierUri,
         },
+        treeSitterWasmUri,
+        treeSitterBashWasmUri,
+        monacoWorkerPaths,
         settings,
       });
     }
