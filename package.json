@@ -1,6 +1,6 @@
 {
   "name": "transform-tool",
-  "displayName": "AnyConverter: JSON, TS, Zod, YAML",
+  "displayName": "AnyConverter: JSON, TS, Zod, YAML, CuRl, ENV",
   "description": "Instantly convert between JSON, TypeScript, Zod, GraphQL, YAML, and more. A high-performance transformation tool for modern developers.",
   "keywords": [
     "json to typescript",
